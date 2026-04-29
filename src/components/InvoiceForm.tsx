@@ -44,7 +44,7 @@ export default function InvoiceForm({ initialData, onSave, onCancel }: InvoiceFo
     control,
     handleSubmit,
     formState: { errors },
-    setValue,
+    // setValue,
     watch,
   } = useForm<InvoiceFormData>({
     resolver: zodResolver(invoiceSchema),
@@ -88,7 +88,7 @@ export default function InvoiceForm({ initialData, onSave, onCancel }: InvoiceFo
 
   const items = watch('items');
 
-  const calculateItemTotal = (qty: number, price: number) => (qty * price).toFixed(2);
+  // const calculateItemTotal = (qty: number, price: number) => (qty * price).toFixed(2);
   const grandTotal = items.reduce((sum, item) => sum + (item.quantity * item.price || 0), 0);
 
   const onSubmit = (data: InvoiceFormData, status: InvoiceStatus) => {
