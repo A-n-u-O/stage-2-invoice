@@ -1,73 +1,70 @@
-# React + TypeScript + Vite
+```markdown
+# Frontend Wizards Stage 2 - Invoice Management App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A fully responsive, accessible, and feature-rich Invoice Management Application built for the Frontend Wizards Stage 2 Task. This application allows users to create, read, update, and delete invoices, manage draft/pending/paid statuses, and seamlessly switch between light and dark themes.
 
-Currently, two official plugins are available:
+**Live Demo:** [Insert Vercel/Netlify Link Here]
+**Figma Design:** [Insert Airtable/Figma Link Here]
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+##  Tech Stack
 
-## React Compiler
+* **Framework:** React 18 + Vite (TypeScript)
+* **Styling:** Tailwind CSS (v3)
+* **Form Management & Validation:** React Hook Form + Zod
+* **Icons & Utils:** Lucide React, date-fns
+* **Data Persistence:** Browser `localStorage`
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Setup Instructions
 
-## Expanding the ESLint configuration
+To run this project locally, ensure you have Node.js installed, then follow these steps:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. **Clone the repository:**
+   ```bash
+   git clone [Insert Repository Link]
+   cd stage-2-invoice
+   ```
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+3. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+4. **Open your browser:**
+   Navigate to `http://localhost:5173` (or the port specified in your terminal).
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+##  Architecture Explanation
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+The application is structured to strictly separate concerns, ensuring scalability and readability:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+* **Global State & Persistence (`/hooks/useInvoices.ts`):** A custom React hook acts as the central data store. It handles all CRUD operations and automatically syncs the state with the browser's `localStorage` to ensure data persists across sessions.
+* **Theme Management (`/context/ThemeContext.tsx`):** A globally available Context API provider that manages the Light/Dark mode toggle, automatically applying the `dark` class to the HTML root and persisting user preference in `localStorage`.
+* **Component-Based Routing (`App.tsx`):** Instead of using a heavy router library like React Router for a two-view application, `App.tsx` manages the view state, conditionally rendering the `<InvoiceList />` or `<InvoiceDetail />` to create a seamless SPA experience.
+* **UI Components:** * The form is isolated within an `InvoiceForm` component and rendered inside a custom `Drawer` that slides in from the left to match the strict Figma specifications.
+  * Form validation is strictly enforced using `Zod` schemas to guarantee data integrity before updating the global state.
+
+##  Trade-offs
+
+* **Local Storage vs. Real Backend:** To prioritize frontend logic, complex UI interactions, and state management within the task deadline, I opted to use `localStorage` for data persistence rather than spinning up a full Node/Express backend. This ensures a fast, client-side experience for the reviewer while demonstrating full CRUD logic.
+* **Tailwind v3 vs. v4:** The project was initially scaffolded with Vite 8 and the new Tailwind v4 alpha. Due to peer dependency clashes and Vite cache instability with the experimental v4 plugin, I downgraded to the stable Tailwind v3. This traded the newest engine for immediate development stability and guaranteed build success.
+* **State Management:** I utilized native React Context and custom hooks instead of Redux Toolkit. Given the scope of the app, Redux would have introduced unnecessary boilerplate.
+
+##  Accessibility Notes
+
+Accessibility was a priority throughout development, ensuring the app is usable for everyone:
+
+* **Semantic HTML:** Utilized proper semantic tags like `<main>`, `<aside>`, and native `<form>` elements.
+* **Keyboard Navigation:** The sliding Drawer and all Modals trap focus appropriately. Users can navigate form fields, checkboxes, and buttons entirely via the `Tab` key.
+* **Escape Key Handling:** The Drawer and Modal components listen for the `Escape` key to close gracefully.
+* **Color Contrast:** Meticulously followed the Figma design system to ensure all text, status badges, and background combinations meet WCAG AA contrast standards in both Light and Dark modes.
+* **Aria Labels:** Icon-only interactive elements (like the Theme Toggle and Delete buttons) include descriptive `aria-labels` for screen readers.
+
+##  Improvements Beyond Requirements
+
+* **Zod Schema Validation:** Integrated strict Zod schema validation to handle edge cases (like preventing negative quantities or empty item lists) providing a bulletproof form experience.
+* **Custom Dropdown Logic:** Built a bespoke, multi-select Checkbox Dropdown for the status filter to perfectly match the Figma UI, avoiding the limitations of standard native `<select>` elements.
 ```
