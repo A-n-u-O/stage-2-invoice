@@ -1,4 +1,3 @@
-```markdown
 # Frontend Wizards Stage 2 - Invoice Management App
 
 A fully responsive, accessible, and feature-rich Invoice Management Application built for the Frontend Wizards Stage 2 Task. This application allows users to create, read, update, and delete invoices, manage draft/pending/paid statuses, and seamlessly switch between light and dark themes.
